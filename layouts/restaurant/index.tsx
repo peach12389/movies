@@ -10,7 +10,7 @@ export const RestaurantLayout = ({ children, data }: Props) => {
     <div className="bg-pink-900">
       {/* <img src={imageSrc} /> */}
       {/* <div /> */}
-      <p className="text-pink-900">Adel</p>
+      <p className="text-yellow-400">Adel</p>
       {children}
     </div>
   );

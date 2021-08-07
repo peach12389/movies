@@ -108,5 +108,5 @@ export default function Restaurant({}: AppProps) {
       </div>
     );
   }
-  return <RestaurantLayout data={data.getStore} />;
+  return <RestaurantLayout data={data.getStore}></RestaurantLayout>;
 }
