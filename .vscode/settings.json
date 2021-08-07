@@ -7,7 +7,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnSave": true,
-  "prettier.jsxSingleQuote": true,
+  "prettier.jsxSingleQuote": false,
   "prettier.jsxBracketSameLine": true,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": false,
+  "prettier.bracketSpacing": true,
+  "prettier.trailingComma": "all",
+  "prettier.semi": true,
+  "prettier.printWidth": 120,
+  "prettier.tabWidth": 2
 }
