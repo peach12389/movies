@@ -5,7 +5,6 @@ import { Filled_Star } from "../../assets/images/icons";
 import Meta from "../../components/Meta";
 import { RestaurantInfoStar } from "../../components/RestaurantInfoStar";
 import moment from "moment";
-
 type TProps = {
   children?: ReactNode;
   data: Record<string, any>;

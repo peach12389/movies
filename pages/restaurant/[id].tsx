@@ -1,96 +1,10 @@
+// import { gql, useQuery } from "@apollo/client/";
 import Meta from "../../components/Meta";
 import { RestaurantLayout } from "../../layouts/restaurant";
 import { RestaurantOverView } from "../../containers/RestaurantOverView";
 import { useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-
-export const GET_STORE = `
-  query GetStore($id: String) {
-    getStore(id: $id) {
-      _id
-      shopName
-      tags
-      userCustomTags
-      address
-      rating
-      restaurantRating
-      category
-      logo
-      image
-      phone
-      ttp
-      isOpen
-      reviewsCount
-      restaurantReviewsCount
-      paymentMethods
-      services
-      estimatedCost {
-        cost
-        customerInteger
-      }
-      deliveryServices {
-        name
-        icon
-        url
-        label
-        value
-      }
-      deliveryRadius {
-        _id
-        radiusKm
-        customerDeliveryCharge
-        vendorDeliveryCharge
-      }
-      mashkorMaxRadius
-      minDeliveryOrderValue
-      location {
-        _id
-        longitude
-        latitude
-      }
-      storeHours {
-        opening
-        closing
-      }
-      socialMedia {
-        facebook
-        instagram
-        twitter
-        snapchat
-      }
-      socialId
-      deliveryETA {
-        min
-        max
-      }
-      comingSoon
-      products {
-        _id
-        shopName
-        products {
-          _id
-          category
-          image
-          name
-          tags
-          price
-          description
-          options {
-            _id
-            category
-            maxSelect
-            minSelect
-            optionsList {
-              _id
-              name
-              price
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+import { GET_STORE } from "../../gql/seller/query";
 
 const useGetSeller = (id: string) => {
   const initObj: {

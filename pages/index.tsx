@@ -1,73 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import Meta from "../components/Meta";
-
-export const GET_BEST_SELLING_STORES = gql`
-  query GetBestSellingStoresCursor($cursor: String, $limit: Int) {
-    getBestSellingStoresCursor(cursor: $cursor, limit: $limit) {
-      data {
-        _id
-        shopName
-        address
-        rating
-        reviewsCount
-        category
-        isOpen
-        image
-        tags
-        ttp
-        location {
-          longitude
-          latitude
-        }
-        comingSoon
-        promoCodes {
-          _id
-          type {
-            name
-            value
-          }
-        }
-      }
-      next
-      nextCursor
-    }
-  }
-`;
-
-export const GET_SIMILAR_STORE = gql`
-  query getSimilarStores($storeId: String!, $useTags: Boolean, $useCategory: Boolean, $options: PaginationOptions) {
-    getSimilarStores(storeId: $storeId, useTags: $useTags, useCategory: $useCategory, options: $options) {
-      data {
-        shopName
-
-        _id
-        address
-        rating
-        reviewsCount
-        category
-        isOpen
-        image
-        tags
-        ttp
-        location {
-          longitude
-          latitude
-        }
-        comingSoon
-        promoCodes {
-          _id
-          type {
-            name
-            value
-          }
-        }
-      }
-      nextPage
-      hasNextPage
-    }
-  }
-`;
+import { GET_BEST_SELLING_STORES } from "../gql/seller/query";
 
 export default function Home() {
   const { data, error, loading } = useQuery(GET_BEST_SELLING_STORES, {
