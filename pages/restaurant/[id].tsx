@@ -1,9 +1,10 @@
-import { gql, useQuery } from "@apollo/client";
-import { useRouter } from "next/dist/client/router";
-import { AppProps } from "next/dist/next-server/lib/router/router";
+import Meta from "../../components/Meta";
 import { RestaurantLayout } from "../../layouts/restaurant";
+import { RestaurantOverView } from "../../containers/RestaurantOverView";
+import { useEffect, useState } from "react";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-export const GET_STORE = gql`
+export const GET_STORE = `
   query GetStore($id: String) {
     getStore(id: $id) {
       _id
@@ -91,22 +92,72 @@ export const GET_STORE = gql`
   }
 `;
 
-export default function Restaurant({}: AppProps) {
-  const router = useRouter();
-  const { data, loading, error } = useQuery(GET_STORE, {
-    variables: { id: router.query.id },
-  });
+const useGetSeller = (id: string) => {
+  const initObj: {
+    data: Record<any, any>;
+    loading: boolean;
+    error: any | null;
+  } = {
+    data: Object(),
+    loading: true,
+    error: null,
+  };
+  const [store, setStore] = useState(initObj);
+
+  useEffect(() => {
+    fetch("https://api.katchkw.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: GET_STORE,
+        variables: { id: id },
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) =>
+        setStore((state) => {
+          console.log(result);
+          return { ...state, data: result.data, loading: false };
+        }),
+      )
+      .catch((err) => setStore({ ...store, loading: false, error: JSON.stringify(err) }));
+  }, []);
+
+  return store;
+};
+
+export default function Restaurant({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data, loading, error } = useGetSeller(query.id as string);
   if (loading) {
-    return <div>...loading</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Meta title="...loading" />
+        ...loading
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div>
+        <Meta title="Oooops" />
         <div>Oooops</div>
         <div>{JSON.stringify(error)}</div>
       </div>
     );
   }
-  return <RestaurantLayout data={data.getStore}></RestaurantLayout>;
+  return (
+    <RestaurantLayout data={data?.getStore}>
+      <RestaurantOverView data={data?.getStore} />
+    </RestaurantLayout>
+  );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const id = query.id;
+  return {
+    props: { query: { id } },
+  };
+};
