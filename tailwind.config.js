@@ -11,16 +11,19 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          green: "#00B800",
+          red: "#fb4628",
+          blue: "#00acff",
+          yello: "#ffbf00",
+          green: "#00cd3d",
         },
-        // green: {
-        //   light: '#F0FFF2',
-        // }
+        green: {
+          light: "#D9F7D9",
+        },
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

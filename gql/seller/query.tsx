@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
-export const GET_STORE = `
+export const GET_STORE = gql`
   query GetStore($id: String) {
     getStore(id: $id) {
       _id
@@ -117,6 +117,39 @@ export const GET_BEST_SELLING_STORES = gql`
       }
       next
       nextCursor
+    }
+  }
+`;
+
+export const GET_SIMILAR_STORE = gql`
+  query getSimilarStores($storeId: String!, $useTags: Boolean, $useCategory: Boolean, $options: PaginationOptions) {
+    getSimilarStores(storeId: $storeId, useTags: $useTags, useCategory: $useCategory, options: $options) {
+      data {
+        shopName
+        _id
+        address
+        rating
+        reviewsCount
+        category
+        isOpen
+        image
+        tags
+        ttp
+        location {
+          longitude
+          latitude
+        }
+        comingSoon
+        promoCodes {
+          _id
+          type {
+            name
+            value
+          }
+        }
+      }
+      nextPage
+      hasNextPage
     }
   }
 `;

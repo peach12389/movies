@@ -1,49 +1,22 @@
-// import { gql, useQuery } from "@apollo/client/";
-import Meta from "../../components/Meta";
-import { RestaurantLayout } from "../../layouts/restaurant";
-import { RestaurantOverView } from "../../containers/RestaurantOverView";
-import { useEffect, useState } from "react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { GET_STORE } from "../../gql/seller/query";
-
-const useGetSeller = (id: string) => {
-  const initObj: {
-    data: Record<any, any>;
-    loading: boolean;
-    error: any | null;
-  } = {
-    data: Object(),
-    loading: true,
-    error: null,
-  };
-  const [store, setStore] = useState(initObj);
-
-  useEffect(() => {
-    fetch("https://api.katchkw.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: GET_STORE,
-        variables: { id: id },
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) =>
-        setStore((state) => {
-          console.log(result);
-          return { ...state, data: result.data, loading: false };
-        }),
-      )
-      .catch((err) => setStore({ ...store, loading: false, error: JSON.stringify(err) }));
-  }, []);
-
-  return store;
-};
+import Meta from '../../components/Meta';
+import { RestaurantLayout } from '../../layouts/restaurant';
+import { RestaurantOverView } from '../../containers/RestaurantOverView';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GET_STORE } from '../../gql/seller/query';
+import { useQuery } from '@apollo/client';
+import { RestaurantMenu } from '../../containers/RestaurantMenu';
+import { Tabs, TabPanel, TabList, Tab } from 'react-tabs';
+import { useState } from 'react';
+import RestaurantTopNav from '../../containers/RestaurantTopNav';
+import Restaurant404 from '../../containers/Restaurant404';
 
 export default function Restaurant({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data, loading, error } = useGetSeller(query.id as string);
+  const tab = query.tab;
+  const tabs = ['overview', 'menu'];
+  const selectedTab = tabs.includes(tab) ? tab : 'overview';
+  const [tabIndex, setTabIndex] = useState(tabs.indexOf(selectedTab));
+
+  const { data, loading, error } = useQuery(GET_STORE, { variables: { id: query.id } });
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -62,16 +35,38 @@ export default function Restaurant({ query }: InferGetServerSidePropsType<typeof
       </div>
     );
   }
-  return (
-    <RestaurantLayout data={data?.getStore}>
-      <RestaurantOverView data={data?.getStore} />
-    </RestaurantLayout>
-  );
+
+  if (data?.getStore._id) {
+    return (
+      <RestaurantLayout data={data?.getStore}>
+        <RestaurantTopNav tabs={tabs} tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <Tabs selectedIndex={tabIndex} onSelect={() => true}>
+          <TabList>
+            <Tab> </Tab>
+            <Tab> </Tab>
+          </TabList>
+          <TabPanel>
+            <RestaurantOverView data={data?.getStore} />
+          </TabPanel>
+          <TabPanel>
+            <RestaurantMenu data={data?.getStore} />
+          </TabPanel>
+        </Tabs>
+      </RestaurantLayout>
+    );
+  } else {
+    return <Restaurant404 />;
+  }
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const id = query.id;
+  const tab = query.tab ? query.tab : 'overview';
   return {
-    props: { query: { id } },
+    props: {
+      query: {
+        id: query.id,
+        tab,
+      },
+    },
   };
 };

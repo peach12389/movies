@@ -9,7 +9,7 @@
   "editor.formatOnSave": true,
   "prettier.jsxSingleQuote": false,
   "prettier.jsxBracketSameLine": true,
-  "prettier.singleQuote": false,
+  "prettier.singleQuote": true,
   "prettier.bracketSpacing": true,
   "prettier.trailingComma": "all",
   "prettier.semi": true,

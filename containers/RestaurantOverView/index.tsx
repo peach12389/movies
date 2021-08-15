@@ -1,7 +1,8 @@
-import RestaurantAddress from "./address";
-import RestaurantDetails from "./details";
-import Map from "./map";
-import RestaurantReviewTags from "./reviewtags";
+import RestaurantAddress from './address';
+import RestaurantDetails from './details';
+import Map from './map';
+import RestaurantReviewTags from './reviewtags';
+import SimilarRestaurants from './similarRestaurants';
 
 type TProps = {
   data: Record<string, any>;
@@ -21,6 +22,7 @@ export const RestaurantOverView = ({ data }: TProps) => {
       />
       <RestaurantReviewTags data={data} />
       <RestaurantDetails data={data} />
+      <SimilarRestaurants data={data} />
     </div>
   );
 };
