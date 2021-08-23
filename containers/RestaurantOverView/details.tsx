@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment } from 'react';
 
 type TProps = {
   data: Record<string, any>;
@@ -35,14 +35,14 @@ const RestaurantDetails = ({ data }: TProps) => {
     let text = null;
 
     if (paymentMethods && paymentMethods.length > 0) {
-      text = paymentMethods.length > 1 ? "Cash and Card accepted" : "Cash accepted only";
+      text = paymentMethods.length > 1 ? 'Cash and Card accepted' : 'Cash accepted only';
     }
 
     return text ? <p className="text-sm mt-px">{text}</p> : null;
   };
 
   return (
-    <div className="px-5">
+    <div className="flex-[2]">
       <p className="font-bold">DETAILS</p>
       <p className="text-sm text-gray-400 mt-px">CUISINES</p>
       <p className="text-sm text-brand-green mt-px">{categories}</p>

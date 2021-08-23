@@ -1,11 +1,13 @@
-import { useQuery } from "@apollo/client";
-import Link from "next/link";
-import Meta from "../components/Meta";
-import { GET_BEST_SELLING_STORES } from "../gql/seller/query";
+import { useQuery } from '@apollo/client';
+import Link from 'next/link';
+import Meta from '../components/Meta';
+import { GET_BEST_SELLING_STORES } from '../gql/seller/query';
 
-import { Restaurant } from "../types";
+import { Restaurant } from '../types';
 
-import RestaurantCard from "../components/RestaurantCard";
+import RestaurantCard from '../components/RestaurantCard';
+
+import FSL from '../components/Loading/fullScreen';
 
 export default function Home() {
   const { data, error, loading } = useQuery(GET_BEST_SELLING_STORES, {
@@ -15,7 +17,7 @@ export default function Home() {
     return (
       <div className="flex justify-center items-center h-screen">
         <Meta title="...loading" />
-        ...loading
+        <FSL />
       </div>
     );
   }

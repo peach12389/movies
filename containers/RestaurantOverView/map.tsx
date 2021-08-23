@@ -1,40 +1,43 @@
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps";
+import GoogleMapReact from 'google-map-react';
 
 type TMarkerProp = {
   lat: number;
   lng: number;
 };
 
+const Marker = ({}: TMarkerProp) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      width: '40px',
+      height: '40px',
+      marginTop: -20,
+      transform: 'translate(-50%, -50%)',
+    }}>
+    <img height="100%" width="100%" src="http://localhost:4000/assets/images/icons/map-pin.png" alt="" />
+  </div>
+);
+
 type TProps = {
   center: TMarkerProp;
   zoom: number;
 };
 
-const GMap = withScriptjs(
-  withGoogleMap(({ center, zoom }: TProps) => {
-    return (
-      <GoogleMap
-        defaultOptions={{ streetViewControl: false, fullscreenControl: false, mapTypeControl: false }}
-        defaultZoom={zoom}
-        defaultCenter={center}>
-        <Marker position={center} />
-      </GoogleMap>
-    );
-  }),
-);
-
 const Map = ({ center, zoom }: TProps) => {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string;
-  const googleMapUrl = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
   return (
-    <GMap
-      loadingElement={<div className="w-screen sm:w-auto my-5 h-72" />}
-      googleMapURL={googleMapUrl}
-      containerElement={<div className="w-screen sm:w-auto my-5 h-72" />}
-      mapElement={<div className="h-full" />}
-      center={center}
-      zoom={zoom}
-    />
+    <div className="w-full h-48 py-2">
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: apiKey }}
+        defaultCenter={center}
+        defaultZoom={zoom}
+        center={center}
+        yesIWantToUseGoogleMapApiInternals>
+        <Marker lat={center.lat} lng={center.lng} />
+      </GoogleMapReact>
+    </div>
   );
 };
 

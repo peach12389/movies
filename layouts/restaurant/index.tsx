@@ -1,15 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
-import { ReactNode, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import converter from 'number-to-words';
 import { Filled_Star } from '../../assets/images/icons';
 import Meta from '../../components/Meta';
 import { RestaurantInfoStar } from '../../components/RestaurantInfoStar';
 import moment from 'moment';
 import StoreHoursModal from '../../components/StoreHoursModal';
+import Breadcrumbs from 'nextjs-breadcrumbs';
+import Image from 'next/image';
+import { AiOutlineInfoCircle, AiFillPhone } from 'react-icons/ai';
 
 type TProps = {
   children?: ReactNode;
   data: Record<string, any>;
+  tabs: string[];
+  tabIndex: number;
+  setTabIndex: Dispatch<SetStateAction<number>>;
 };
 
 export const convertOpeningTime = (nextOpening: { time: string }) => {
@@ -74,25 +80,35 @@ const getCost = (estimatedCost: { customerInteger?: number; cost?: string }) => 
   }
 };
 
-export const RestaurantLayout = ({ children, data }: TProps) => {
+const RestaurantLayout = (props: TProps) => {
+  const { children, data, tabIndex, setTabIndex, tabs } = props;
+
   const [image, setImage] = useState({
     src: `https://img.katchkw.com/images/${data._id}/${data.image}`,
     imageClass: 'w-full h-full object-cover',
-    containerClass: 'w-full h-full',
+    containerClass: 'w-full',
+    width: '1000',
+    height: '300',
+    objectFit: 'cover',
   });
 
   const onImageError = () => {
     setImage((state) => {
       return {
         ...state,
-        src: '/assets/images/default-rest-img.png',
+        src: 'default-rest-img_lqZlEFwiEbN.png',
         imageClass: 'w-96 h-40 object-contain',
-        containerClass: 'bg-green-light h-full w-full flex justify-center items-center',
+        containerClass: 'bg-green-light w-full flex justify-center items-center',
+        objectFit: 'contain',
+        width: '300',
+        height: '300',
       };
     });
   };
 
+  const storeID = data._id;
   const storeName = data.shopName;
+  const phoneNumber = data.phone;
   const tags = data.tags;
   const pickUpRating = data.rating.toFixed(1);
   const pickUpRatingCount = data.reviewsCount;
@@ -104,63 +120,142 @@ export const RestaurantLayout = ({ children, data }: TProps) => {
   const todaysIndex = (moment().local().day() + 1) % 7;
   const storeHours = getStoreHours(data.storeHours);
   const todayStoreHours = storeHours[todaysIndex];
-  const isOpenNow = todayStoreHours.isOpenNow;
+  const isOpenNow = todayStoreHours?.isOpenNow;
   const [showTiming, setShowTiming] = useState(false);
 
   const toggleModal = () => {
     setShowTiming(!showTiming);
   };
 
-  return (
-    <main className="bg-gray-50 h-screen">
-      <Meta title={storeName} keywords={tags} />
-      <div className="h-52 relative">
-        <div className={image.containerClass}>
-          <img className={image.imageClass} src={image.src} alt={image.src} onError={onImageError} />
-        </div>
-        <div className="h-full bg-gradient-to-t from-gray-50 absolute top-0 bottom-0 left-0 right-0" />
-      </div>
-      <div className="md:w-9/12 sm:w-full  ml-auto mr-auto pb-10">
-        <div className=" bg-white sm:ml-auto sm:mr-auto mr-3 ml-3 rounded-lg p-3 shadow-md bottom-10 relative max-w-xl">
-          <p className="text-2xl font-bold">{storeName}</p>
-          <div className="flex mt-2">
-            <RestaurantInfoStar
-              image={Filled_Star}
-              stars={pickUpRating}
-              reviwesCount={pickUpRatingCount}
-              message="Restaurant Review"
-            />
-            <span className="w-9" />
-            <RestaurantInfoStar
-              image={Filled_Star}
-              stars={restaurantRating}
-              reviwesCount={restaurantRatingCount}
-              message="Katch! Pickup Review"
-            />
-          </div>
-          <div className="mt-2 mb-2">
-            <p className="p-0 text-lg">{category}</p>
-            <p className="p-0 text-xs text-gray-400 mt-1">{address}</p>
-            {todayStoreHours ? (
-              <div className="cursor-pointer" onClick={toggleModal}>
-                <span className={`p-0 text-xs text-${isOpenNow ? 'brand-green' : 'gray-400'} mt-1`}>
-                  {isOpenNow ? 'Open now ' : 'Closed '}
-                </span>
-                <span className="p-0 text-xs text-gray-400 mt-1">
-                  - {`${todayStoreHours.time} ${todayStoreHours.isToday ? '(Today)' : ''}`}
-                </span>
-              </div>
-            ) : (
-              <span className="p-0 text-xs text-gray-400 mt-1">Closed for the day</span>
-            )}
-            <p className="p-0 text-xs text-gray-400  mt-1">{estimatedCost}</p>
-          </div>
-        </div>
-        {children}
-      </div>
-      {/* <ScrollToTop /> */}
+  const transformLabel = (label: string) => {
+    if (label === 'restaurant') {
+      return null;
+    }
 
-      <StoreHoursModal isOpen={showTiming} toggleModal={toggleModal} storeHours={storeHours} />
+    if (label === storeID) {
+      return `restaurant / ${storeName}`;
+    }
+
+    return label;
+  };
+
+  return (
+    <main className="bg-gray-50 px-5 py-3">
+      <Meta title={storeName} keywords={tags} />
+
+      <div className="max-w-[1000px] mx-auto relative">
+        <Breadcrumbs
+          useDefaultStyle
+          rootLabel="Home /"
+          transformLabel={transformLabel}
+          activeItemClassName="text-gray-300 ml-1 text-sm"
+          inactiveItemClassName="text-black ml-1 hover:text-brand-green text-sm"
+          listStyle={{
+            display: 'flex',
+          }}
+          containerClassName="bg-white"
+        />
+        <div className={`${image.containerClass} mt-3`}>
+          <Image
+            unoptimized
+            className={image.imageClass}
+            src={image.src}
+            objectFit={image.objectFit as any}
+            width={image.width}
+            height={image.height}
+            alt="restaurant image"
+            onError={onImageError}
+          />
+        </div>
+        {/* up image */}
+        {/* bottom info */}
+        <div className="sticky top-0 mx-auto z-[1]">
+          <div className="p-2 bg-white">
+            <div className="flex flex-col md:flex-row">
+              <p className="font-bold text-2xl mr-auto mt-1">{storeName}</p>
+              <div className="flex">
+                <RestaurantInfoStar
+                  image={Filled_Star}
+                  stars={pickUpRating}
+                  reviwesCount={pickUpRatingCount}
+                  message="Restaurant Review"
+                />
+                <span className="w-9" />
+                <RestaurantInfoStar
+                  image={Filled_Star}
+                  stars={restaurantRating}
+                  reviwesCount={restaurantRatingCount}
+                  message="Katch! Pickup Review"
+                />
+              </div>
+            </div>
+            <div className="mt-2 md:-mt-5 mb-2 ">
+              <p className="p-0 text-lg">{category}</p>
+              <p className="p-0 text-xs text-gray-400 mt-1">{address}</p>
+              {todayStoreHours ? (
+                <div className="cursor-pointer flex items-center" onClick={toggleModal}>
+                  <span className={`p-0 text-xs text-${isOpenNow ? 'brand-green' : 'gray-400'} mt-1`}>
+                    {isOpenNow ? 'Open now ' : 'Closed '}
+                  </span>
+                  <span className="p-0 text-xs text-gray-400 mt-1">
+                    - {`${todayStoreHours.time} ${todayStoreHours.isToday ? '(Today)' : ''}`}
+                  </span>
+                  <AiOutlineInfoCircle className="mt-1 ml-2 text-gray-600" style={{ height: 20, width: 20 }} />
+                </div>
+              ) : (
+                <span className="p-0 text-xs text-gray-400 mt-1">Closed for the day</span>
+              )}
+              <div className="flex">
+                <p className="p-0 text-xs text-gray-400  mt-1">{estimatedCost}</p>
+                <div className="ml-auto cursor-pointer">
+                  <a href={`tel:${phoneNumber}`} className="flex items-center">
+                    <AiFillPhone className="text-brand-green mr-1 h-4 w-4" />
+                    <span className="text-brand-green text-sm">{phoneNumber}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <MenuNav active={tabIndex} setActive={setTabIndex} tabs={tabs} />
+          </div>
+
+          {children}
+        </div>
+      </div>
+      <StoreHoursModal storeHours={storeHours} toggleModal={toggleModal} isOpen={showTiming} />
     </main>
   );
 };
+
+type TTabsProps = {
+  tabs: string[];
+  active: number;
+  setActive: Dispatch<SetStateAction<number>>;
+};
+
+const MenuNav = ({ active, setActive, tabs }: TTabsProps) => {
+  return (
+    <div className="flex border-b-4 border-gray-400 -mb-2 -mx-2">
+      {tabs.map((item, index) => {
+        const onClick = () => {
+          setActive(index);
+        };
+
+        const activeStyle = 'border-brand-green';
+        const inActiveStyle = 'border-gray-400 text-gray-400';
+
+        const isActive = active === index;
+        const defaultStyle = 'flex-1 text-center border-b-4 -mb-1 px-5 cursor-pointer text-xl py-1';
+        return (
+          <span
+            className={`${defaultStyle} ${isActive ? activeStyle : inActiveStyle} capitalize`}
+            key={item}
+            onClick={onClick}>
+            {item}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+export default RestaurantLayout;

@@ -1,5 +1,6 @@
-import Image from "next/image";
-import { Copy_Location, Get_Directions } from "../../assets/svg";
+import Image from 'next/image';
+import { Copy_Location, Get_Directions } from '../../assets/svg';
+import Map from './map';
 
 type TProps = {
   data: Record<string, any>;
@@ -11,7 +12,7 @@ const RestaurantAddress = ({ data }: TProps) => {
   const location = data.location;
   const urlSchema = (): string => {
     const { latitude, longitude } = location;
-    const scheme = "http://maps.google.com/maps?q=";
+    const scheme = 'http://maps.google.com/maps?q=';
     const latLng = `${latitude},${longitude}`;
     const label = storeName;
     const url = `${scheme}${latLng}+(${label})`;
@@ -19,7 +20,7 @@ const RestaurantAddress = ({ data }: TProps) => {
   };
   const onGetLocation = () => {
     const url = urlSchema();
-    window.open(url, "_blank");
+    window.open(url, '_blank');
   };
 
   const onCopyLocation = () => {
@@ -29,7 +30,7 @@ const RestaurantAddress = ({ data }: TProps) => {
   };
 
   return (
-    <div className="px-5">
+    <div className="flex-[1] min-w-[400px] sticky top-[400px]">
       <p className="font-bold">ADDRESS</p>
       <p className="text-sm text-gray-400 mt-3">{address}</p>
       <div className="flex items-center mt-3">
@@ -43,6 +44,12 @@ const RestaurantAddress = ({ data }: TProps) => {
           <span className="ml-2 text-brand-green">GET DRIECTION</span>
         </span>
       </div>
+      <Map
+        center={{
+          lat: location.latitude,
+          lng: location.longitude,
+        }}
+      />
     </div>
   );
 };
