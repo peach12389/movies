@@ -20,7 +20,7 @@ export const RestaurantMenu = ({ data }: TProps) => {
     <div className="mt-3">
       <div className="flex w-full relative">
         <Menu categories={categories} />
-        <ul id="item-list" className="scrollbar-hide mx-5 flex-[4] h-[390px] overflow-y-scroll">
+        <ul id="item-list" className="scrollbar-hide px-5 flex-[4] h-[390px] overflow-y-scroll bg-white">
           {products.map((item: any) => {
             const isCat = item.catName;
             return isCat ? (
@@ -44,7 +44,7 @@ type TRenderListProps = {
 const RenderListHeader = ({ item }: TRenderListProps) => {
   return (
     <Fragment key={item.catName}>
-      <div className="sticky top-0 h-8 bg-white z-[2]">
+      <div className="sticky top-0 h-8 bg-white z-[1] py-1">
         <h2 className="font-bold">{`${item.catName}`}</h2>
       </div>
       <div id={item.catName} className="h-0" />

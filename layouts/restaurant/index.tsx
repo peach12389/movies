@@ -169,8 +169,8 @@ const RestaurantLayout = (props: TProps) => {
         </div>
         {/* up image */}
         {/* bottom info */}
-        <div className="sticky top-0 mx-auto z-[1]">
-          <div className="p-2 bg-white">
+        <div className="mx-auto z-[1]">
+          <div className="p-2 bg-white sticky top-0 z-[2]">
             <div className="flex flex-col md:flex-row">
               <p className="font-bold text-2xl mr-auto mt-1">{storeName}</p>
               <div className="flex">
