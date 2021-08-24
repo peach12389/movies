@@ -5,6 +5,11 @@ import '../public/nprogress.css';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import 'intersection-observer';
+import '../styles/globals.css';
+import 'keen-slider/keen-slider.min.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import client, { ApolloProvider } from '../apollo';
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -8,3 +8,4 @@ export const Map_Pin = 'assets/images/icons/map-pin_Nu9fLE17Wcyu.png';
 export const Location_Pin = 'assets/images/icons/location-green_ejNXKgFO13F.png';
 export const TTP = 'assets/images/icons/timer-green_ixbil_dFPW3.png';
 export const Shop = require('./shop.png');
+export const RES = "assets/images/icons/RES_zKhBDXluXW3O3.png"

@@ -13,7 +13,7 @@ module.exports = {
         brand: {
           red: '#fb4628',
           blue: '#00acff',
-          yellow: '#ffbf00',
+          yello: '#ffbf00',
           green: '#00cd3d',
         },
         green: {
@@ -38,5 +38,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/line-clamp'), require('tailwind-scrollbar-hide')],
+  plugins: [require('@tailwindcss/line-clamp'), require('tailwind-scrollbar-hide'), require('@tailwindcss/forms')],
 };

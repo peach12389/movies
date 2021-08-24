@@ -153,3 +153,34 @@ export const GET_SIMILAR_STORE = gql`
     }
   }
 `;
+
+export const GET_COLLECTIONS = gql`
+  query getAllCollections {
+    getAllCollections {
+      _id
+      name
+      description
+      sellers {
+        data {
+          _id
+          shopName
+          address
+          rating
+          isOpen
+          tags
+          location {
+            longitude
+            latitude
+          }
+          ttp
+          image
+          reviewsCount
+          comingSoon
+        }
+        next
+        nextCursor
+      }
+      bannerImage
+    }
+  }
+`;

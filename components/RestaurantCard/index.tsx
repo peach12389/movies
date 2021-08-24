@@ -1,59 +1,64 @@
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Filled_Star } from '../../assets/images/icons';
-import { Restaurant } from '../../types';
+import { Restaurant, GeoLocation } from '../../types';
 import { RestaurantInfoStar } from '../../components/RestaurantInfoStar';
 import { generateImgScr, distance } from '../../helpers';
 import { Location_Pin, TTP } from '../../assets/images/icons';
-import { useGeoLocation } from '../../hooks';
-import { useRouter } from 'next/dist/client/router';
+
+// import { useRouter } from 'next/router';
 
 type RestaurantCardProps = {
   data: Restaurant;
+  userLocation: GeoLocation | null;
 };
 
 const RestaurantCard: FC<RestaurantCardProps> = (props) => {
-  const { data } = props;
-  const router = useRouter();
-  const userLocation = useGeoLocation();
-  const [image, setImage] = useState({
-    src: generateImgScr(data.image),
-    imageClass: 'w-full h-full object-cover',
-    containerClass: 'w-full',
-    width: '600',
-    height: '200',
-    objectFit: 'cover',
-  });
+  const { data, userLocation } = props;
+  // const router = useRouter();
 
-  const onImageError = () => {
-    setImage((state) => {
-      return {
-        ...state,
-        src: 'default-rest-img_lqZlEFwiEbN.png',
-        imageClass: 'w-96 h-40 object-contain',
-        containerClass: 'bg-green-light w-full flex justify-center items-center',
-        objectFit: 'contain',
-        width: '300',
-        height: '300',
-      };
-    });
-  };
+  // const [image, setImage] = useState({
+  //   src: generateImgScr(data.image),
+  //   imageClass: 'w-full h-full object-cover',
+  //   containerClass: 'w-full',
+  //   width: '700',
+  //   height: '250',
+  //   objectFit: 'cover',
+  // });
 
-  const onNav = () => {
-    router.push(`/restaurant/${data._id}`);
-  };
+  // const onImageError = () => {
+  //   setImage((state) => {
+  //     return {
+  //       ...state,
+  //       src: 'default-rest-img_lqZlEFwiEbN.png',
+  //       imageClass: 'w-96 h-40 object-contain',
+  //       containerClass: 'bg-green-light w-full flex justify-center items-center',
+  //       objectFit: 'contain',
+  //       width: '700',
+  //       height: '250',
+  //     };
+  //   });
+  // };
+  // console.log('image', image);
+
+  // const onNav = () => {
+  //   router.push(`/restaurant/${data._id}`);
+  // };
 
   return (
-    <div onClick={onNav} className="w-[400px] shadow-md cursor-pointer rounded-md overflow-hidden m-2">
-      <div className={`max-h-[150px] overflow-hidden ${image.containerClass}`}>
+    <article
+      // onClick={onNav}
+      className="flex flex-col h-[300px] rounded-md w-full max-w-lg overflow-hidden shadow-md my-4 cursor-pointer">
+      <div className="max-h-[175px] w-full">
         <Image
-          className={image.imageClass}
-          src={image.src}
-          objectFit={image.objectFit as any}
-          width={image.width}
-          height={image.height}
+          className="w-full h-full object-cover"
+          src={'tr:di-default-rest-img_lqZlEFwiEbN.png,w-500,h-auto' + generateImgScr(data.image)}
+          objectFit="cover"
+          width={700}
+          height={250}
           alt="restaurant image"
-          onError={onImageError}
+          blurDataURL="../../assets/images/default-rest-img.png"
+          placeholder="blur"
         />
       </div>
       <section className="px-3 py-1 flex flex-col">
@@ -87,7 +92,7 @@ const RestaurantCard: FC<RestaurantCardProps> = (props) => {
         </div>
         <Tags tags={data.tags} />
       </section>
-    </div>
+    </article>
   );
 };
 export default RestaurantCard;
