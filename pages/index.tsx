@@ -1,5 +1,5 @@
 import Meta from '../components/Meta';
-import BestSellingRestaurants from '../containers/BestSellingRestaurants';
+import Discovery from '../containers/Discovery';
 import React from 'react';
 import SearchBar from '../components/SearchBar';
 
@@ -8,7 +8,7 @@ export default function Home() {
     <div className="px-2">
       <Meta title="Home" />
       <SearchBar />
-      <BestSellingRestaurants />
+      <Discovery />
     </div>
   );
 }

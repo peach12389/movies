@@ -6,7 +6,7 @@ import { RestaurantInfoStar } from '../../components/RestaurantInfoStar';
 import { generateImgScr, distance } from '../../helpers';
 import { Location_Pin, TTP } from '../../assets/images/icons';
 
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 type RestaurantCardProps = {
   data: Restaurant;
@@ -15,7 +15,7 @@ type RestaurantCardProps = {
 
 const RestaurantCard: FC<RestaurantCardProps> = (props) => {
   const { data, userLocation } = props;
-  // const router = useRouter();
+  const router = useRouter();
 
   // const [image, setImage] = useState({
   //   src: generateImgScr(data.image),
@@ -41,14 +41,14 @@ const RestaurantCard: FC<RestaurantCardProps> = (props) => {
   // };
   // console.log('image', image);
 
-  // const onNav = () => {
-  //   router.push(`/restaurant/${data._id}`);
-  // };
+  const onNav = () => {
+    router.push(`/restaurant/${data._id}`);
+  };
 
   return (
     <article
-      // onClick={onNav}
-      className="flex flex-col h-[300px] rounded-md w-full max-w-lg overflow-hidden shadow-md my-4 cursor-pointer">
+      onClick={onNav}
+      className="flex flex-col min-h-[260px] lg:min-h-[300px] rounded-md w-full max-w-lg overflow-hidden shadow-md my-4 cursor-pointer">
       <div className="max-h-[175px] w-full">
         <Image
           className="w-full h-full object-cover"
@@ -84,8 +84,8 @@ const RestaurantCard: FC<RestaurantCardProps> = (props) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-600 text-sm">{data.category}</span>
+        <div className="flex justify-between items-center flex-grow">
+          <span className="text-gray-600 text-sm ">{data.category}</span>
           <span className="mt-1 w-48 text-sm text-right truncate overflow-ellipsis text-gray-500 tranc">
             {data.address}
           </span>
@@ -102,7 +102,7 @@ type TagsProps = {
 };
 const Tags: FC<TagsProps> = (props) => {
   return (
-    <ul className="flex flex-wrap">
+    <ul className="flex flex-wrap mb-2 h-7">
       {props.tags.map((tag) => (
         <li className="bg-gray-100 text-xs text-gray-500 font-semibold mr-2 p-1 rounded-lg" key={tag}>
           {tag}

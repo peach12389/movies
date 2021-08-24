@@ -17,3 +17,9 @@ export type GeoLocation = {
     longitude: number,
     latitude: number,
 }
+
+export type PaginatedRestaurants = {
+    data: Restaurant[],
+    next: boolean,
+    nextCursor: string
+}

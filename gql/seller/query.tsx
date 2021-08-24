@@ -184,3 +184,56 @@ export const GET_COLLECTIONS = gql`
     }
   }
 `;
+
+export const GET_STORES_BY_DISTANCE = gql`
+  query getStoresByUserLocation($options: PaginationOptions!, $location: Location) {
+    getStoresByUserLocation(options: $options, location: $location) {
+      data {
+        _id
+        shopName
+        address
+        rating
+        category
+        isOpen
+        tags
+        location {
+          longitude
+          latitude
+        }
+        ttp
+        image
+        reviewsCount
+        services
+        comingSoon
+      }
+      hasNextPage
+      nextPage
+      totalDocs
+    }
+  }
+`;
+
+export const GET_STORES_COLLECTION_ID = gql`
+  query getStoresByCollectionID($limit: Int, $collectionID: String!, $cursor: String) {
+    getStoresByCollectionID(limit: $limit, collectionID: $collectionID, cursor: $cursor) {
+      data {
+        _id
+        shopName
+        address
+        rating
+        category
+        isOpen
+        tags
+        location {
+          longitude
+          latitude
+        }
+        ttp
+        image
+        reviewsCount
+      }
+      nextCursor
+      next
+    }
+  }
+`;
