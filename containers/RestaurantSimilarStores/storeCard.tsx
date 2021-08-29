@@ -8,7 +8,7 @@ type TProps = {
 const StoreCard = ({ data }: TProps) => {
   return (
     <div className="flex-1">
-      <RestaurantCard data={data} />
+      <RestaurantCard data={data} userLocation={null} />
     </div>
   );
 };

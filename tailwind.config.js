@@ -13,7 +13,7 @@ module.exports = {
         brand: {
           red: '#fb4628',
           blue: '#00acff',
-          yello: '#ffbf00',
+          yellow: '#ffbf00',
           green: '#00cd3d',
         },
         green: {
