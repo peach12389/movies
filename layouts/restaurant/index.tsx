@@ -112,7 +112,7 @@ export const RestaurantLayout = ({ children, data }: TProps) => {
   };
 
   return (
-    <main className="bg-gray-50 h-screen">
+    <main className="bg-gray-50 ">
       <Meta title={storeName} keywords={tags} />
       <div className="h-52 relative">
         <div className={image.containerClass}>
