@@ -13,3 +13,15 @@ export const distance = (from: any, center: any) => {
     else
         return ""
 }
+
+export const getGreetings = () => {
+    const hours = new Date().getHours();
+    switch (true) {
+      case hours >= 0 && hours < 12:
+        return 'Morning';
+      case hours >= 12 && hours < 17:
+        return 'Afternoon';
+      case hours >= 17 && hours < 24:
+        return 'Evening';
+    }
+  };

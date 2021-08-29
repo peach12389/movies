@@ -1,59 +1,101 @@
-import { FaInstagramSquare, FaFacebookF } from 'react-icons/fa';
+import { FaInstagram, FaFacebookF } from 'react-icons/fa';
+import Image from 'next/image';
+import Link from 'next/link';
+import SideNav from '../SideNav';
+import { Fragment, useState, useEffect } from 'react';
+import { MdMenu, MdRestaurantMenu } from 'react-icons/md';
+import { useWindowSize } from '../../hooks';
+
 const Header = () => {
+  const routes = [
+    {
+      name: 'Home',
+      href: '/',
+    },
+    {
+      name: 'Search',
+      href: '#search',
+    },
+    {
+      name: 'Map',
+      href: '#map',
+    },
+    {
+      name: 'Profile',
+      href: '#profile',
+    },
+  ];
+
+  const socials = [
+    {
+      Icon: FaFacebookF,
+      href: 'https://www.facebook.com/katchkw/',
+    },
+    {
+      Icon: FaInstagram,
+      href: 'https://www.instagram.com/katchkw/?hl=en',
+    },
+  ];
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (isOpen && width > 640) {
+      toggleMenu();
+    }
+  }, [width]);
+
+  const MenuIcon = isOpen ? MdRestaurantMenu : MdMenu;
+
   return (
-    <div>
-      <div className=" bg-brand-green h-16 ">
-        <div className="flex px-3">
-          <div className="mt-4 mx">
-            <a href="https://katchkw.com">
-              <img src="http://katchkw.com/wp-content/uploads/2020/11/logo-katch.svg" />
-            </a>
+    <Fragment>
+      <header className="bg-brand-green px-5 py-2 overflow-hidden z-[2] sticky top-0 left-0 right-0 h-[62px]">
+        <div className="flex">
+          <div className="min-w-[100px] cursor-pointer">
+            <Link passHref href="/" aria-label="katch home">
+              <Image unoptimized alt="katch logo" src="/assets/images/katch-logo-white.svg" height="40" width="100" />
+            </Link>
           </div>
-          <nav className="flex-1 justify-items-center text-center mt-6 px-16 ">
-            <ul className="flex flex-1 h-full text-white max-w-2xl text-center	items-center ml-20">
-              <li className="flex-1 ">
-                <a title="Home" href="#home">
-                  Home
-                </a>
-              </li>
-              <li className="flex-1">
-                <a title="About Us" href="#aboutus">
-                  About Us
-                </a>
-              </li>
-              <li className="flex-1">
-                <a title="Partner with us" href="#partner">
-                  Partner with us
-                </a>
-              </li>
-              <li className="flex-1">
-                <a title=" Whykatch" href="#Whykatch">
-                  Why Katch!
-                </a>
-              </li>
-              <li className="flex-1">
-                <a title="Team" href="#team">
-                  Team
-                </a>
-              </li>
-              <li className="flex-1">
-                <a title="faq" href="#faq">
-                  FAQ
-                </a>
-              </li>
+          <nav className="hidden sm:block mx-auto my-auto">
+            <ul className="flex text-white items-center">
+              {routes.map((route) => {
+                return (
+                  <li key={route.name} className=" text-center w-24">
+                    <span className="w-1 cursor-pointer" title={route.name}>
+                      <Link href={route.href} aria-label={route.name}>
+                        {route.name}
+                      </Link>
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
-          <div className="flex mt-7">
-            <a href="https://google.com">
-              <FaFacebookF className="text-white	" />
-            </a>
-            <a href="https://google.com">
-              <FaInstagramSquare className="text-white" />
-            </a>
+          <div className="justify-center items-center ml-auto sm:ml-0 hidden sm:flex">
+            {socials.map((social) => {
+              const Icon = social.Icon;
+              return (
+                <a target="blank" className="ml-2" key={social.href} href={social.href}>
+                  <Icon className="text-white" />
+                </a>
+              );
+            })}
+          </div>
+          <div
+            onClick={() => toggleMenu()}
+            className="flex ml-auto items-center justify-center cursor-pointer sm:hidden">
+            <MenuIcon className="text-white text-3xl" />
           </div>
         </div>
-      </div>
-    </div>
+      </header>
+      <SideNav routes={routes} isOpen={isOpen} toggleMenu={toggleMenu} />
+    </Fragment>
   );
 };
 export default Header;

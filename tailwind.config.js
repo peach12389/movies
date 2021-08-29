@@ -19,6 +19,11 @@ module.exports = {
         green: {
           light: '#D9F7D9',
         },
+        social: {
+          facebook: '#4267B2',
+          instagram: '#C13584',
+          linkedin: '#2867B2',
+        },
       },
       keyframes: {
         'fade-in': {
