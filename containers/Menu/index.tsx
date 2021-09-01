@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import Modal from '../Modal';
 import { HiOutlineChevronRight } from 'react-icons/hi';
+import { useEffect } from 'react';
 
 type TProps = {
   categories: Record<string, any>;
@@ -27,30 +28,53 @@ const goToViolation = (id: string, callBack?: CallableFunction) => {
 };
 
 export const Menu = ({ categories }: TProps) => {
+  const onResize = () => {
+    const storeInfoDiv = document.getElementById('store-info');
+    if (storeInfoDiv) {
+      const divH = storeInfoDiv.offsetHeight;
+      const menuUl = document.getElementById('store-side-menu');
+      if (menuUl) {
+        menuUl.style.top = `${divH + 62 + 5}px`;
+        menuUl.style.height = `${window.innerHeight - (divH + 62 + 20)}px`;
+      }
+    }
+  };
+  useEffect(() => {
+    onResize();
+
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
   return (
-    <ul className="scrollbar-hide rounded-lg border-4 mb-auto flex-col items-start flex-[1] sm:flex-[1] hidden sm:flex h-[390px] overflow-scroll">
-      {categories.map((x: Record<string, any>, index: number) => {
-        const name = x.name;
-        const count = x.count;
-        const isFirstItem = index === 0;
-        const onClick = () => {
-          goToViolation(name);
-        };
-        return (
-          <button
-            key={name}
-            onClick={onClick}
-            className={`${
-              isFirstItem ? 'border-t-0-' : 'border-t-4'
-            } ${'text-gray-400 text-sm w-full min-h-[44px] text-left px-4 flex items-center'}`}>
-            <span className="line-clamp-1">
-              {name} ({count})
-            </span>
-            <HiOutlineChevronRight className="ml-auto " />
-          </button>
-        );
-      })}
-    </ul>
+    <div id="store-side-menu" className="scrollbar-hide flex-[1] hidden sm:block overflow-scroll sticky">
+      <ul className="rounded-lg border-4">
+        {categories.map((x: Record<string, any>, index: number) => {
+          const name = x.name;
+          const count = x.count;
+          const isFirstItem = index === 0;
+          const onClick = () => {
+            goToViolation(name);
+          };
+          return (
+            <button
+              key={name}
+              onClick={onClick}
+              className={`${
+                isFirstItem ? 'border-t-0-' : 'border-t-4'
+              } ${'text-gray-400 text-sm w-full min-h-[44px] text-left px-4 flex items-center'}`}>
+              <span className="line-clamp-1">
+                {name} ({count})
+              </span>
+              <HiOutlineChevronRight className="ml-auto " />
+            </button>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 
