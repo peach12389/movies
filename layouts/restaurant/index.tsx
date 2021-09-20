@@ -167,7 +167,7 @@ const RestaurantLayout = (props: TProps) => {
             onError={onImageError}
           />
         </div>
-        {/* up image */}
+        {/* up image  */}
         {/* bottom info */}
         <div className="mx-auto z-[1]">
           <div id="store-info" className="p-2 bg-white sticky top-[62px] z-[2]">
@@ -215,9 +215,9 @@ const RestaurantLayout = (props: TProps) => {
                 </div>
               </div>
             </div>
+
             <MenuNav active={tabIndex} setActive={setTabIndex} tabs={tabs} />
           </div>
-
           {children}
         </div>
       </div>

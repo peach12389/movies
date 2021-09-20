@@ -55,7 +55,7 @@ const Header = () => {
 
   return (
     <Fragment>
-      <header className="bg-brand-green px-5 py-2 overflow-hidden z-[2] sticky top-0 left-0 right-0 h-[62px]">
+      <header id="head" className="bg-brand-green px-5 py-2 overflow-hidden z-[2] sticky top-0 left-0 right-0 h-[62px]">
         <div className="flex">
           <div className="min-w-[100px] cursor-pointer">
             <Link passHref href="/" aria-label="katch home">

@@ -20,7 +20,7 @@ export const RestaurantMenu = ({ data }: TProps) => {
     <div className="mt-3">
       <div className="flex w-full relative">
         <Menu categories={categories} />
-        <ul id="item-list" className="scrollbar-hide px-5 flex-[4] overflow-y-scroll bg-white">
+        <ul id="item-list" className=" scrollbar-hide px-5 flex-[4] overflow-y-scroll bg-white">
           {products.map((item: any) => {
             const isCat = item.catName;
             return isCat ? (

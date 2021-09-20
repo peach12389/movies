@@ -11,18 +11,18 @@ const goToViolation = (id: string, callBack?: CallableFunction) => {
   const catItem = document.getElementById(id);
 
   if (catItem) {
-    const ul = document.getElementById('item-list');
+    const b = document.getElementById('store-info');
+    //const c = document.getElementById('head');
+    const h = b?.clientHeight;
+    //const h1 = c.clientHeight * 2;
+    //  console.log(h1);
+    // console.log(h);
+    const itemOffset = catItem?.offsetTop + h;
 
-    if (ul) {
-      const ulScroll = ul?.scrollTop || 0;
-      const itemOffset = catItem?.offsetTop - 32;
-      const finalOffset = itemOffset - ulScroll;
-
-      ul.scrollTo({
-        top: finalOffset < itemOffset ? itemOffset : finalOffset,
-        behavior: 'smooth',
-      });
-    }
+    window.scrollTo({
+      top: itemOffset,
+      behavior: 'smooth',
+    });
   }
   if (callBack) callBack();
 };

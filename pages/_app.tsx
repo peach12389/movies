@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={client}>
-      <Header />
+      {/* <Header /> */}
       <Component {...pageProps} />
       <Footer />
     </ApolloProvider>
