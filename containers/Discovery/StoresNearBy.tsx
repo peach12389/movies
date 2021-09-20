@@ -24,36 +24,36 @@ const StoresNearBy: FC<StoresNearByProps> = (props) => {
 
   const [isFetchingMore, setIsFetchingMore] = useState(true);
 
-  // useBottomScrollListener(
-  //   () => {
-  //     setIsFetchingMore(true);
-  //     fetchMore({
-  //       variables: { options: { page: data.getStoresByUserLocation.nextPage, limit: 8 } },
-  //       updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
-  //         setIsFetchingMore(false);
-  //         return {
-  //           getStoresByUserLocation: {
-  //             hasNextPage: fetchMoreResult?.getStoresByUserLocation?.hasNextPage,
-  //             nextPage: fetchMoreResult?.getStoresByUserLocation?.nextPage,
-  //             totalDocs: fetchMoreResult?.getStoresByUserLocation?.totalDocs,
-  //             data: [
-  //               ...previousResult?.getStoresByUserLocation?.data,
-  //               ...fetchMoreResult?.getStoresByUserLocation?.data,
-  //             ],
-  //           },
-  //         };
-  //       },
-  //     });
-  //   },
-  //   {
-  //     debounce: 100,
-  //     debounceOptions: {
-  //       leading: false,
-  //       trailing: true,
-  //       maxWait: 300,
-  //     },
-  //   },
-  // );
+  useBottomScrollListener(
+    () => {
+      setIsFetchingMore(true);
+      fetchMore({
+        variables: { options: { page: data.getStoresByUserLocation.nextPage, limit: 8 } },
+        updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
+          setIsFetchingMore(false);
+          return {
+            getStoresByUserLocation: {
+              hasNextPage: fetchMoreResult?.getStoresByUserLocation?.hasNextPage,
+              nextPage: fetchMoreResult?.getStoresByUserLocation?.nextPage,
+              totalDocs: fetchMoreResult?.getStoresByUserLocation?.totalDocs,
+              data: [
+                ...previousResult?.getStoresByUserLocation?.data,
+                ...fetchMoreResult?.getStoresByUserLocation?.data,
+              ],
+            },
+          };
+        },
+      });
+    },
+    {
+      debounce: 100,
+      debounceOptions: {
+        leading: false,
+        trailing: true,
+        maxWait: 300,
+      },
+    },
+  );
 
   if (loading) {
     return (
@@ -83,8 +83,8 @@ const StoresNearBy: FC<StoresNearByProps> = (props) => {
         })}
       </div>
       {isFetchingMore && (
-        <div className="flex items-center justify-center py-5 w-full bg-green-light rounded-lg mb-4">
-          <FetchMore />
+        <div className="flex items-center justify-center py-5 w-full rounded-lg mb-4">
+          <FetchMore width="w-full" maxWidth="max-w-[250px]" height="h-[35px]" />
         </div>
       )}
     </div>
