@@ -3,11 +3,14 @@ import { useInView } from 'react-intersection-observer';
 
 type TProps = {
   fetchMore?: CallableFunction;
-  containerClass?: string;
+  width?: string;
+  maxWidth?: string;
+  height?: string;
+  maxHeight?: string;
 };
 
 const FetchMore: FC<TProps> = (props) => {
-  const { fetchMore, containerClass } = props;
+  const { fetchMore, width, maxWidth, maxHeight, height } = props;
   const [loading, setLoading] = useState(false);
   const isMounted = useRef(false);
   const { ref, inView } = useInView({
@@ -32,11 +35,9 @@ const FetchMore: FC<TProps> = (props) => {
   return (
     <div
       ref={ref}
-      className={
-        containerClass
-          ? containerClass
-          : 'bg-green-light w-10 h-full max-h-[275px] rounded-lg m-2 flex justify-center items-center'
-      }>
+      className={`bg-green-light ${width ?? 'w-10'} ${height ?? 'h-full'} ${maxHeight ?? 'max-h-[275px]'} ${
+        maxWidth ?? ''
+      } rounded-lg m-2 flex justify-center items-center`}>
       <div className="flex justify-center items-center">
         <div
           style={{
