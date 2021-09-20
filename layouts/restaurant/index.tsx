@@ -140,7 +140,7 @@ const RestaurantLayout = (props: TProps) => {
   };
 
   return (
-    <main className="bg-gray-50 px-5 py-3">
+    <main className="bg-gray-50 px-5 pb-3">
       <Meta title={storeName} keywords={tags} />
 
       <div className="max-w-[1000px] mx-auto relative">
@@ -153,9 +153,9 @@ const RestaurantLayout = (props: TProps) => {
           listStyle={{
             display: 'flex',
           }}
-          containerClassName="bg-white"
+          containerClassName="py-3"
         />
-        <div className={`${image.containerClass} mt-3`}>
+        <div className={`${image.containerClass}`}>
           <Image
             unoptimized
             className={image.imageClass}

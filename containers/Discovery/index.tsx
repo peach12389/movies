@@ -1,18 +1,16 @@
 import Collections from './Collections';
 import StoresNearBy from './StoresNearBy';
-
-import { useGeoLocation } from '../../hooks';
+import { Fragment } from 'react';
+import FSL from '../../components/Loading/fullScreen';
 
 export default function Discovery() {
-  const userLocation = useGeoLocation();
   return (
-    <div>
-      {userLocation && (
-        <>
-          <Collections userLocation={userLocation} />
-          <StoresNearBy userLocation={userLocation} />
-        </>
-      )}
-    </div>
+    <Fragment>
+      <Collections />
+      <StoresNearBy />
+      {/* <div className="flex-grow flex justify-center items-center h-full">
+        <FSL />
+      </div> */}
+    </Fragment>
   );
 }

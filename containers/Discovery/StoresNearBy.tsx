@@ -9,51 +9,51 @@ import { GET_STORES_BY_DISTANCE } from '../../gql/seller/query';
 import { GeoLocation, Restaurant } from '../../types';
 import RestaurantCard from '../../components/RestaurantCard';
 import CollectionTitle from '../../components/CollectionTitle';
+import { useGeoLocation } from '../../hooks';
 
-type StoresNearByProps = {
-  userLocation: GeoLocation;
-};
+type StoresNearByProps = {};
 const StoresNearBy: FC<StoresNearByProps> = (props) => {
+  const userLocation = useGeoLocation();
   const { data, loading, error, fetchMore } = useQuery(GET_STORES_BY_DISTANCE, {
     variables: {
       options: { page: 1, limit: 8 },
       serviceTypes: [],
-      location: { longitude: props.userLocation.longitude, latitude: props.userLocation.latitude },
+      location: userLocation ? { longitude: userLocation.longitude, latitude: userLocation.latitude } : null,
     },
   });
 
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(true);
 
-  useBottomScrollListener(
-    () => {
-      setIsFetchingMore(true);
-      fetchMore({
-        variables: { options: { page: data.getStoresByUserLocation.nextPage, limit: 8 } },
-        updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
-          setIsFetchingMore(false);
-          return {
-            getStoresByUserLocation: {
-              hasNextPage: fetchMoreResult?.getStoresByUserLocation?.hasNextPage,
-              nextPage: fetchMoreResult?.getStoresByUserLocation?.nextPage,
-              totalDocs: fetchMoreResult?.getStoresByUserLocation?.totalDocs,
-              data: [
-                ...previousResult?.getStoresByUserLocation?.data,
-                ...fetchMoreResult?.getStoresByUserLocation?.data,
-              ],
-            },
-          };
-        },
-      });
-    },
-    {
-      debounce: 100,
-      debounceOptions: {
-        leading: false,
-        trailing: true,
-        maxWait: 300,
-      },
-    },
-  );
+  // useBottomScrollListener(
+  //   () => {
+  //     setIsFetchingMore(true);
+  //     fetchMore({
+  //       variables: { options: { page: data.getStoresByUserLocation.nextPage, limit: 8 } },
+  //       updateQuery: (previousResult: any, { fetchMoreResult }: any) => {
+  //         setIsFetchingMore(false);
+  //         return {
+  //           getStoresByUserLocation: {
+  //             hasNextPage: fetchMoreResult?.getStoresByUserLocation?.hasNextPage,
+  //             nextPage: fetchMoreResult?.getStoresByUserLocation?.nextPage,
+  //             totalDocs: fetchMoreResult?.getStoresByUserLocation?.totalDocs,
+  //             data: [
+  //               ...previousResult?.getStoresByUserLocation?.data,
+  //               ...fetchMoreResult?.getStoresByUserLocation?.data,
+  //             ],
+  //           },
+  //         };
+  //       },
+  //     });
+  //   },
+  //   {
+  //     debounce: 100,
+  //     debounceOptions: {
+  //       leading: false,
+  //       trailing: true,
+  //       maxWait: 300,
+  //     },
+  //   },
+  // );
 
   if (loading) {
     return (
@@ -79,7 +79,7 @@ const StoresNearBy: FC<StoresNearByProps> = (props) => {
       <CollectionTitle name="Stores Near By" showSeeAll={false} />
       <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-2">
         {data?.getStoresByUserLocation?.data.map((restaurant: Restaurant) => {
-          return <RestaurantCard key={restaurant._id} userLocation={props.userLocation} data={restaurant} />;
+          return <RestaurantCard key={restaurant._id} data={restaurant} />;
         })}
       </div>
       {isFetchingMore && (

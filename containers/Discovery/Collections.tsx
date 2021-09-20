@@ -7,46 +7,27 @@ import { GET_COLLECTIONS } from '../../gql/seller/query';
 import Meta from '../../components/Meta';
 
 import FSL from '../../components/Loading/fullScreen';
+import { TCollection } from '../../types/collection';
 
-type CollectionsProps = {
-  userLocation: GeoLocation;
-};
-const Collections: FC<CollectionsProps> = (props) => {
+type CollectionsProps = {};
+
+const Collections: FC<CollectionsProps> = () => {
   const { data, loading, error } = useQuery(GET_COLLECTIONS);
+  if (loading || error) return null;
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen my-5">
-        <Meta title="...loading" />
-        <FSL />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <Meta title="Oooops" />
-        <div>Oooops</div>
-        <div>{JSON.stringify(error)}</div>
-      </div>
-    );
-  }
   return (
     <>
-      {data.getAllCollections.map(
-        (collection: { _id: string; description: string; name: string; sellers: PaginatedRestaurants }) => {
-          return (
-            <Collection
-              key={collection._id}
-              description={collection.description as string}
-              name={collection.name as string}
-              userLocation={props.userLocation}
-              sellers={collection.sellers as PaginatedRestaurants}
-            />
-          );
-        },
-      )}
+      {data.getAllCollections.map((collection: TCollection) => {
+        return (
+          <Collection
+            key={collection._id}
+            collectionId={collection._id}
+            description={collection.description as string}
+            name={collection.name as string}
+            sellers={collection.sellers as PaginatedRestaurants}
+          />
+        );
+      })}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 type TProps = {
@@ -6,26 +6,27 @@ type TProps = {
   containerClass?: string;
 };
 
-const FetchMore = ({ fetchMore, containerClass }: TProps) => {
+const FetchMore: FC<TProps> = (props) => {
+  const { fetchMore, containerClass } = props;
   const [loading, setLoading] = useState(false);
-  const ismounted = useRef(false);
+  const isMounted = useRef(false);
   const { ref, inView } = useInView({
     threshold: 0,
   });
-  const callFatchMore = async () => {
-    ismounted.current && setLoading(true);
+  const callFetchMore = async () => {
+    isMounted.current && setLoading(true);
     if (fetchMore) {
       await fetchMore();
     }
-    ismounted.current && setLoading(false);
+    isMounted.current && setLoading(false);
   };
   useEffect(() => {
-    ismounted.current = true;
+    isMounted.current = true;
     if (inView && !loading) {
-      callFatchMore();
+      callFetchMore();
     }
     return () => {
-      ismounted.current = false;
+      isMounted.current = false;
     };
   }, [inView]);
   return (

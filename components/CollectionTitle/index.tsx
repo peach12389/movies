@@ -8,11 +8,11 @@ type CollectionTitleProps = {
 };
 
 const CollectionTitle: FC<CollectionTitleProps> = ({ name, showSeeAll = true }) => (
-  <div className="flex items-center">
-    <div className="w-12 h-12">
-      <Image src={RES} height="37.4" width="38.6" layout="responsive" alt="restaurant icon" />
-    </div>
-    <h5 className="ml-3 text-2xl font-bold flex-1">{name}</h5>
+  <div className="flex items-center px-5">
+    <span className="w-10 h-10">
+      <Image src={RES} height="20" width="20" layout="responsive" alt="restaurant icon" />
+    </span>
+    <h5 className="ml-3 text-lg font-bold flex-1">{name}</h5>
     {showSeeAll && (
       <a href="#" className="text-brand-red font-semibold leading-3">
         See all &gt;&gt;
